@@ -1,80 +1,193 @@
 /* ============================================================
  * 千图AI · 手持商品 MVP 原型 · 样式
- * 对齐 ai.58pic.com Dark Mode + 翠绿主色 #00B277
+ * 严格遵循 designknowledge.md §1.4 CTA 哲学 + §2 Tokens 三层架构
+ *
+ * 关键决策(对齐 designknowledge.md):
+ * - §1.3 Button 全 pill 铁律 → 所有按钮 radius/full
+ * - §1.4 CTA Hierarchy → Primary=fg/1 / Secondary=elevated / Hero=Lime
+ * - §1.5 Hero Anchor Rule → AI 生成动作 = Lime + pill + sparkles ✨
+ * - §1.1 Lime 稀缺化 → 仅 AI 时刻(Hero / Loading / 选中态)出现
+ * - §1.1 品牌绿仅 Logo / VIP 营销 CTA 出现,不作 UI 默认 CTA
+ * - §2.5 双模式 → 当前 Dark mode,Light 切换只改 Semantic 层映射
  * ============================================================ */
 
 :root {
-  /* 背景 · Dark Mode(对齐千图AI) */
-  --bg-app: #000000;
-  --bg-surface-1: #141414;
-  --bg-surface-2: #1F1F1F;
-  --bg-surface-3: #2A2A2A;
+  /* ============================================================
+   * §2.2 Primitives · 原料色阶(来自 designknowledge §1.1 + §2.2)
+   * ============================================================ */
 
-  /* 前景文字 */
-  --fg-1: #FFFFFF;
-  --fg-2: #999999;
-  --fg-3: #666666;
-  --fg-disabled: #4D4D4D;
+  /* Gray · neutral 色阶(zinc 风格) */
+  --gray-50:  #FAFAFA;
+  --gray-100: #F5F5F5;
+  --gray-200: #E5E5E5;
+  --gray-300: #D4D4D4;
+  --gray-400: #A3A3A3;
+  --gray-500: #737373;
+  --gray-600: #525252;
+  --gray-700: #404040;
+  --gray-750: #2F2F2F;
+  --gray-800: #262626;
+  --gray-850: #1F1F1F;
+  --gray-900: #171717;
+  --gray-950: #0A0A0A;
+  --gray-990: #050505;
 
-  /* 线条 */
-  --line-1: #1F1F1F;
-  --line-2: #333333;
-  --line-3: #4D4D4D;
+  /* Lime · AI 时刻专用(designknowledge §1.1 派生源 #D8F51E) */
+  --lime-100: #EFFCB8;
+  --lime-300: #E5F861;
+  --lime-400: #DDF63A;
+  --lime-500: #D8F51E;
+  --lime-600: #BFDB0E;
+  --lime-700: #94AC08;
 
-  /* 品牌色 · 千图AI 翠绿 rgb(0, 178, 119) */
-  --accent: #00B277;
-  --accent-hover: #00CC88;
-  --accent-active: #009A66;
-  --accent-bg: rgba(0, 178, 119, 0.12);
-  --accent-border: rgba(0, 178, 119, 0.4);
+  /* Green · 千图绿品牌色(designknowledge §1.1 = #00B277) */
+  --green-500: #00B277;
+  --green-600: #00935F;
 
-  /* 按钮 */
-  --button-hero-bg: #00B277;
-  --button-hero-fg: #FFFFFF;
-  --button-hero-bg-hover: #00CC88;
-  --button-primary-bg: #FFFFFF;
-  --button-primary-fg: #000000;
-  --button-primary-bg-hover: #F5F5F5;
-  --button-secondary-bg: transparent;
-  --button-secondary-fg: #FFFFFF;
-  --button-secondary-border: #4D4D4D;
-  --button-secondary-bg-hover: rgba(255, 255, 255, 0.06);
+  /* Red · 状态色 */
+  --red-400: #F87171;
+  --red-500: #EF4444;
+  --red-600: #DC2626;
 
-  /* 状态色 */
-  --color-error: #FF4D4F;
-  --color-error-bg: rgba(255, 77, 79, 0.12);
-  --color-warning: #FAAD14;
-  --color-success: #00B277;
+  /* ============================================================
+   * §2.3 Semantic 层 · 角色(Dark mode 取值)
+   * 切 Light 只改这一段映射,组件不感知 mode
+   * ============================================================ */
 
-  /* 圆角 · 对齐千图AI(8/16/42 胶囊/88 大胶囊) */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-  --radius-pill: 42px;
-  --radius-pill-lg: 88px;
+  /* Surface · 背景层级 */
+  --surface-app:      var(--gray-950);
+  --surface-sunken:   var(--gray-990);
+  --surface-card:     var(--gray-900);
+  --surface-panel:    var(--gray-850);
+  --surface-elevated: var(--gray-850);
+  --surface-overlay:  rgba(0, 0, 0, 0.8);
+
+  /* Foreground · 前景文字 */
+  --fg-1:        var(--gray-100);
+  --fg-2:        var(--gray-400);
+  --fg-3:        var(--gray-500);
+  --fg-disabled: var(--gray-700);
+  --fg-inverse:  var(--gray-950);
+
+  /* Line · 描边 */
+  --line-1:     var(--gray-750);
+  --line-2:     var(--gray-800);
+  --line-3:     var(--gray-850);
+  --line-focus: var(--fg-1);          /* §3A.1 焦点用 fg/1 不用品牌色 */
+
+  /* Accent · Lime(§1.1 稀缺出现 · AI 时刻专用) */
+  --accent-lime:       var(--lime-500);
+  --accent-lime-hover: var(--lime-400);
+  --accent-lime-press: var(--lime-600);
+  --accent-lime-bg:    rgba(216, 245, 30, 0.12);
+  --accent-lime-on:    var(--gray-950);   /* §3C.7 黑字 on Lime · WCAG AAA */
+
+  /* Brand · 千图绿(§1.1 仅 Logo / VIP 营销 CTA) */
+  --brand-green:       var(--green-500);
+  --brand-green-hover: var(--green-600);
+  --brand-green-fg:    #FFFFFF;
+
+  /* Sem · 状态语义 */
+  --sem-error:    var(--red-500);
+  --sem-error-bg: rgba(239, 68, 68, 0.12);
+
+  /* ============================================================
+   * §2.4 Component 层 · 按钮专属 token
+   * §1.4 CTA Hierarchy + §1.3 全 pill
+   * ============================================================ */
+
+  /* btn/primary · 主 CTA = fg/1 实底(Dark = 白底黑字) */
+  --btn-primary-bg:       var(--fg-1);
+  --btn-primary-fg:       var(--fg-inverse);
+  --btn-primary-hover-bg: var(--gray-200);
+
+  /* btn/hero · AI 生成 = Lime(§1.5) */
+  --btn-hero-bg:       var(--accent-lime);
+  --btn-hero-fg:       var(--accent-lime-on);
+  --btn-hero-hover-bg: var(--accent-lime-hover);
+  --btn-hero-press-bg: var(--accent-lime-press);
+
+  /* btn/secondary · 次要 = surface/elevated 浅底 + fg/1 文字 */
+  --btn-secondary-bg:       var(--surface-elevated);
+  --btn-secondary-fg:       var(--fg-1);
+  --btn-secondary-border:   var(--line-2);
+  --btn-secondary-hover-bg: var(--gray-800);
+
+  /* btn/ghost · 透明 */
+  --btn-ghost-fg:       var(--fg-2);
+  --btn-ghost-hover-bg: var(--surface-elevated);
+
+  /* btn 共用 */
+  --btn-disabled-bg: var(--gray-800);
+  --btn-disabled-fg: var(--fg-disabled);
+  --btn-radius:      9999px;          /* §1.3 全 pill 铁律 */
+
+  /* ============================================================
+   * Spacing · §2.2 Primitive · 4px 基础 + 0.5/1.5/2.5 半档
+   * ============================================================ */
+  --space-0_5: 2px;
+  --space-1:   4px;
+  --space-1_5: 6px;
+  --space-2:   8px;
+  --space-2_5: 10px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+
+  /* ============================================================
+   * Radius · §2.2 Primitive · 9 档
+   * ============================================================ */
+  --radius-1:    4px;
+  --radius-2:    8px;
+  --radius-2_5:  10px;
+  --radius-3:    12px;
+  --radius-4:    16px;
+  --radius-6:    24px;
+  --radius-8:    32px;
+  --radius-12:   48px;
   --radius-full: 9999px;
 
-  /* 间距 · 4px 基础 */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --space-12: 48px;
-  --space-16: 64px;
+  /* ============================================================
+   * Typography · §2.2 Primitive · §2.7 line-height 三档铁律
+   * ============================================================ */
+  --font-h1: 28px;
+  --font-h2: 22px;
+  --font-h3: 18px;
+  --font-h4: 16px;
+  --font-body-lg:  16px;
+  --font-body:     14px;
+  --font-caption:  12px;
+  --font-micro:    10px;
 
-  /* 阴影(暗色用更深的阴影) */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+
+  --lh-tight:  1.2;     /* §2.7 大标题 */
+  --lh-normal: 1.5;     /* §2.7 多行正文 */
+
+  --font-sans: -apple-system, system-ui, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+
+  /* ============================================================
+   * Shadow · §2.2 投影
+   * ============================================================ */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.7);
-  --shadow-accent: 0 4px 20px rgba(0, 178, 119, 0.35);
+  --shadow-hero-glow: 0 8px 32px rgba(216, 245, 30, 0.25);
 
-  /* 字体 · 对齐千图AI 系统字体栈 */
-  --font-sans: -apple-system, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  /* ============================================================
+   * Motion · §2.2 动效
+   * ============================================================ */
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ============================================================
@@ -90,10 +203,10 @@ html, body {
 }
 body {
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: var(--font-body);
   color: var(--fg-1);
-  background: var(--bg-app);
-  line-height: 1.5;
+  background: var(--surface-app);
+  line-height: var(--lh-normal);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -106,12 +219,12 @@ img {
 }
 
 /* ============================================================
- * 顶部导航 · 80px 黑底 · 对齐千图AI
+ * 顶部导航 · 80px Dark · 对齐 ai.58pic.com
  * ============================================================ */
 .app-header {
   height: 80px;
-  background: var(--bg-app);
-  border-bottom: 1px solid var(--line-1);
+  background: var(--surface-app);
+  border-bottom: 1px solid var(--line-2);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -129,12 +242,12 @@ img {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 20px;
   color: var(--fg-1);
 }
 .logo-mark {
-  color: var(--accent);
+  color: var(--brand-green);       /* §1.1 品牌绿仅在 logo 出现 */
   font-size: 22px;
 }
 .main-nav {
@@ -144,22 +257,23 @@ img {
 }
 .nav-link {
   padding: 6px 14px;
-  border-radius: var(--radius-pill);
-  color: var(--fg-disabled);
+  border-radius: var(--btn-radius);   /* §1.3 全 pill */
+  color: var(--fg-3);
   font-size: 16px;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all var(--duration-fast) var(--easing-standard);
   background: transparent;
   border: none;
 }
 .nav-link:hover {
   color: var(--fg-1);
-  background: var(--bg-surface-2);
+  background: var(--surface-elevated);
 }
 .nav-link.active {
-  background: var(--bg-surface-2);
+  background: var(--surface-elevated);
   color: var(--fg-1);
+  font-weight: var(--font-weight-medium);
 }
 .header-right {
   display: flex;
@@ -169,12 +283,12 @@ img {
 .theme-toggle {
   width: 56px;
   height: 28px;
-  background: var(--bg-surface-2);
+  background: var(--surface-elevated);
   border: 1px solid var(--line-2);
   border-radius: var(--radius-full);
   position: relative;
   cursor: pointer;
-  font-size: 11px;
+  font-size: var(--font-caption);
   color: var(--fg-2);
   padding: 0 8px;
   display: flex;
@@ -195,42 +309,41 @@ img {
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  background: var(--bg-surface-2);
+  background: var(--surface-elevated);
   padding: 8px 14px;
-  border-radius: var(--radius-pill);
-  font-size: 14px;
-  font-weight: 500;
+  border-radius: var(--btn-radius);   /* pill */
+  font-size: var(--font-body);
+  font-weight: var(--font-weight-medium);
   color: var(--fg-1);
   border: 1px solid var(--line-2);
 }
 .quota-icon {
-  color: var(--accent);
+  color: var(--accent-lime);          /* 算力图标 = AI 时刻 = lime */
 }
 .quota-unit {
   color: var(--fg-2);
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
 }
 .btn-vip {
-  background: var(--accent);
-  color: white;
+  background: var(--brand-green);     /* §1.1 品牌绿 = VIP 营销 CTA */
+  color: var(--brand-green-fg);
   padding: 8px 20px;
-  border-radius: var(--radius-pill-lg);
+  border-radius: var(--btn-radius);   /* pill */
   border: none;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.15s;
+  font-size: var(--font-body);
+  font-weight: var(--font-weight-semibold);
+  transition: all var(--duration-fast) var(--easing-standard);
 }
 .btn-vip:hover {
-  background: var(--accent-hover);
-  box-shadow: var(--shadow-accent);
+  background: var(--brand-green-hover);
 }
 
 /* ============================================================
  * 主内容
  * ============================================================ */
 .app-main {
-  background: var(--bg-app);
+  background: var(--surface-app);
   min-height: calc(100vh - 80px);
   max-width: 900px;
   margin: 0 auto;
@@ -242,23 +355,24 @@ img {
 }
 .screen.active {
   display: block;
-  animation: fadeInUp 0.3s ease-out;
+  animation: fadeInUp var(--duration-base) var(--easing-standard);
 }
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .page-title {
-  font-size: 28px;
-  font-weight: 600;
+  font-size: var(--font-h1);
+  font-weight: var(--font-weight-semibold);
   color: var(--fg-1);
   margin-bottom: var(--space-2);
   letter-spacing: -0.02em;
+  line-height: var(--lh-tight);
 }
 .page-subtitle {
   color: var(--fg-2);
   margin-bottom: var(--space-8);
-  font-size: 14px;
+  font-size: var(--font-body);
 }
 .back-btn {
   background: transparent;
@@ -268,14 +382,14 @@ img {
   padding: 0;
   margin-bottom: var(--space-4);
   font-size: 13px;
-  transition: color 0.15s;
+  transition: color var(--duration-fast);
 }
 .back-btn:hover {
   color: var(--fg-1);
 }
 
 /* ============================================================
- * Tab Bar(屏 1 入口)— 千图AI 风格胶囊 tab
+ * Tab Bar(屏 1 入口)· §1.3 全 pill · 手持版 = Lime 暗示 AI 时刻
  * ============================================================ */
 .tab-bar {
   display: flex;
@@ -285,52 +399,55 @@ img {
 }
 .tab-btn {
   padding: 10px 20px;
-  background: var(--bg-surface-1);
+  background: var(--surface-card);
   border: 1px solid var(--line-2);
-  border-radius: var(--radius-pill);
+  border-radius: var(--btn-radius);
   cursor: pointer;
   color: var(--fg-2);
-  font-size: 14px;
+  font-size: var(--font-body);
   display: flex;
   align-items: center;
   gap: var(--space-2);
   white-space: nowrap;
-  transition: all 0.15s;
-  font-weight: 500;
+  transition: all var(--duration-fast) var(--easing-standard);
+  font-weight: var(--font-weight-medium);
 }
 .tab-btn:hover {
   color: var(--fg-1);
-  border-color: var(--line-3);
+  border-color: var(--line-1);
 }
 .tab-btn.active {
-  color: #000;
+  /* §1.4 Primary CTA = fg/1 实底 · Dark = 白底黑字 */
+  color: var(--fg-inverse);
   background: var(--fg-1);
   border-color: var(--fg-1);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 .tab-btn-handheld {
-  position: relative;
+  /* AI 时刻 · 稀缺 Lime 出现 · §1.1 */
+  background: var(--accent-lime-bg);
+  border-color: rgba(216, 245, 30, 0.35);
+  color: var(--accent-lime);
   animation: pulse-attention 2.5s ease-in-out infinite;
-  border-color: var(--accent-border) !important;
-  color: var(--accent) !important;
-  background: var(--accent-bg) !important;
+  position: relative;
 }
 .tab-btn-handheld:hover {
-  background: rgba(0, 178, 119, 0.18) !important;
-  border-color: var(--accent) !important;
+  background: rgba(216, 245, 30, 0.18);
+  border-color: var(--accent-lime);
+  color: var(--accent-lime);
 }
 .badge-new {
-  background: var(--color-error);
+  background: var(--sem-error);
   color: white;
   font-size: 9px;
   padding: 2px 6px;
   border-radius: var(--radius-full);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   letter-spacing: 0.3px;
 }
 @keyframes pulse-attention {
-  0%, 100% { transform: translateY(0); box-shadow: 0 0 0 0 rgba(0, 178, 119, 0.4); }
-  50% { transform: translateY(-2px); box-shadow: 0 0 0 6px rgba(0, 178, 119, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(216, 245, 30, 0.4); }
+  50%      { box-shadow: 0 0 0 6px rgba(216, 245, 30, 0); }
 }
 
 /* ============================================================
@@ -341,10 +458,10 @@ img {
   padding: var(--space-8) 0;
 }
 .entry-arrow-hint {
-  color: var(--accent);
-  font-weight: 500;
+  color: var(--accent-lime);    /* AI 时刻 · 引导用 lime */
+  font-weight: var(--font-weight-medium);
   margin-bottom: var(--space-10);
-  font-size: 14px;
+  font-size: var(--font-body);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -356,7 +473,7 @@ img {
 }
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  50%      { transform: translateY(-6px); }
 }
 .placeholder-grid {
   display: grid;
@@ -365,80 +482,79 @@ img {
   margin-bottom: var(--space-4);
 }
 .placeholder-card {
-  background: var(--bg-surface-1);
+  background: var(--surface-card);
   border: 1px solid var(--line-2);
   padding: var(--space-10) var(--space-6);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-4);       /* §1.3 card 12-16 */
   color: var(--fg-3);
   font-size: 13px;
-  transition: all 0.15s;
+  transition: all var(--duration-fast);
 }
 .placeholder-card:hover {
-  border-color: var(--line-3);
+  border-color: var(--line-1);
   color: var(--fg-2);
 }
 .placeholder-hint {
   color: var(--fg-3);
-  font-size: 12px;
+  font-size: var(--font-caption);
   font-style: italic;
 }
 
 /* ============================================================
- * Section Card(屏 2 主页)— 暗色卡片
+ * Section Card(屏 2 主页)· radius/4 (§1.3 card 12-16)
  * ============================================================ */
 .section-card {
-  background: var(--bg-surface-1);
+  background: var(--surface-card);
   border: 1px solid var(--line-2);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-4);
   padding: var(--space-6);
 }
 .form-section {
   padding: var(--space-5) 0;
   border-bottom: 1px solid var(--line-2);
 }
-.form-section:first-child {
-  padding-top: 0;
-}
+.form-section:first-child { padding-top: 0; }
 .form-section:last-child {
   padding-bottom: 0;
   border-bottom: none;
 }
 .section-label {
   display: block;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   margin-bottom: var(--space-3);
-  font-size: 14px;
+  font-size: var(--font-body);
   color: var(--fg-1);
 }
 .required {
-  color: var(--color-error);
+  color: var(--sem-error);
   margin-right: 2px;
 }
 
 /* ============================================================
- * 上传区
+ * 上传区(drop-zone)· §4A.4c upload/dropzone-*
  * ============================================================ */
 .upload-area {
-  border: 2px dashed var(--line-3);
-  border-radius: var(--radius-lg);
+  border: 2px dashed var(--line-1);
+  border-radius: var(--radius-2_5);    /* §4A.4c dropzone-radius radius/2.5 */
   padding: var(--space-10);
   text-align: center;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--duration-base);
   position: relative;
   min-height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-surface-2);
+  background: var(--surface-panel);
 }
 .upload-area:hover {
-  border-color: var(--accent);
-  background: var(--accent-bg);
+  /* §4A.4c hover = lime-bg + fg/1 border */
+  border-color: var(--fg-1);
+  background: var(--accent-lime-bg);
 }
 .upload-area.dragover {
-  border-color: var(--accent);
-  background: var(--accent-bg);
+  border-color: var(--accent-lime);
+  background: var(--accent-lime-bg);
   transform: scale(1.005);
 }
 .upload-empty {
@@ -449,17 +565,17 @@ img {
 }
 .upload-icon {
   font-size: 32px;
-  color: var(--fg-3);
+  color: var(--fg-3);             /* §4A.4c upload/dropzone-icon-fg = fg/3 */
   margin-bottom: var(--space-2);
 }
 .upload-hint {
-  color: var(--fg-1);
+  color: var(--fg-2);             /* §4A.4c upload/dropzone-label-fg = fg/2 */
   font-size: 15px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 .upload-meta {
-  color: var(--fg-3);
-  font-size: 12px;
+  color: var(--fg-3);             /* §4A.4c upload/dropzone-hint-fg = fg/3 */
+  font-size: var(--font-caption);
 }
 .upload-preview {
   position: relative;
@@ -469,7 +585,7 @@ img {
 }
 .upload-preview img {
   max-height: 260px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-2);
 }
 .upload-remove {
   position: absolute;
@@ -477,7 +593,7 @@ img {
   right: 8px;
   background: rgba(0, 0, 0, 0.8);
   color: white;
-  border: 1px solid var(--line-3);
+  border: 1px solid var(--line-1);
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -494,7 +610,7 @@ img {
 }
 
 /* ============================================================
- * 模特列表
+ * 模特列表 · 选中态用 Lime(§3B 选中态铁律)
  * ============================================================ */
 .model-list {
   display: grid;
@@ -503,20 +619,21 @@ img {
 }
 .model-card {
   border: 2px solid var(--line-2);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-3);
   padding: var(--space-2);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all var(--duration-fast) var(--easing-standard);
   position: relative;
-  background: var(--bg-surface-2);
+  background: var(--surface-panel);
 }
 .model-card:hover {
-  border-color: var(--line-3);
+  border-color: var(--line-1);
   transform: translateY(-2px);
 }
 .model-card.active {
-  border-color: var(--accent);
-  background: var(--accent-bg);
+  /* §3B 选中态 = Lime */
+  border-color: var(--accent-lime);
+  background: var(--accent-lime-bg);
 }
 .model-card.active::after {
   content: '✓';
@@ -525,20 +642,20 @@ img {
   right: 8px;
   width: 24px;
   height: 24px;
-  background: var(--accent);
+  background: var(--accent-lime);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  font-weight: 700;
-  color: #FFFFFF;
+  font-weight: var(--font-weight-bold);
+  color: var(--accent-lime-on);     /* 黑字 on Lime · WCAG AAA */
 }
 .model-thumb {
   width: 100%;
   aspect-ratio: 1;
-  background: var(--bg-surface-3);
-  border-radius: var(--radius-md);
+  background: var(--surface-elevated);
+  border-radius: var(--radius-2);
   margin-bottom: var(--space-2);
   overflow: hidden;
 }
@@ -548,14 +665,14 @@ img {
   object-fit: cover;
 }
 .model-name {
-  font-size: 12px;
+  font-size: var(--font-caption);
   color: var(--fg-2);
   text-align: center;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 .model-card.active .model-name {
   color: var(--fg-1);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 /* ============================================================
@@ -571,16 +688,16 @@ img {
   gap: var(--space-2);
   width: 100%;
   text-align: left;
-  font-size: 14px;
+  font-size: var(--font-body);
   color: var(--fg-2);
-  transition: color 0.15s;
+  transition: color var(--duration-fast);
 }
 .advanced-toggle:hover {
   color: var(--fg-1);
 }
 .advanced-arrow {
   font-size: 10px;
-  transition: transform 0.2s;
+  transition: transform var(--duration-base);
 }
 .advanced-toggle.expanded .advanced-arrow {
   transform: rotate(180deg);
@@ -588,8 +705,8 @@ img {
 .advanced-content {
   margin-top: var(--space-4);
   padding: var(--space-4);
-  background: var(--bg-surface-2);
-  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+  border-radius: var(--radius-3);
   border: 1px solid var(--line-2);
 }
 .form-row {
@@ -598,47 +715,41 @@ img {
   align-items: center;
   margin-bottom: var(--space-4);
 }
-.form-row:last-child {
-  margin-bottom: 0;
-}
+.form-row:last-child { margin-bottom: 0; }
 .form-label {
   font-size: 13px;
   color: var(--fg-2);
 }
 
-/* Radio group · 暗色 + 选中翠绿 */
+/* Radio · §3B.3 选中态 Lime */
 .radio-group {
   display: flex;
   gap: var(--space-2);
 }
-.radio-item {
-  cursor: pointer;
-}
-.radio-item input {
-  display: none;
-}
+.radio-item { cursor: pointer; }
+.radio-item input { display: none; }
 .radio-item span {
   padding: 6px 14px;
-  border: 1px solid var(--line-3);
-  border-radius: var(--radius-md);
+  border: 1px solid var(--line-1);
+  border-radius: var(--btn-radius);    /* §1.3 全 pill */
   display: inline-block;
   font-size: 13px;
-  transition: all 0.15s;
-  background: var(--bg-surface-3);
+  transition: all var(--duration-fast);
+  background: var(--surface-elevated);
   color: var(--fg-2);
 }
 .radio-item input:checked + span {
-  background: var(--accent);
-  color: #FFFFFF;
-  border-color: var(--accent);
-  font-weight: 600;
+  background: var(--accent-lime);
+  color: var(--accent-lime-on);
+  border-color: var(--accent-lime);
+  font-weight: var(--font-weight-semibold);
 }
 .radio-item:hover input:not(:checked) + span {
   border-color: var(--fg-3);
   color: var(--fg-1);
 }
 
-/* Switch */
+/* Toggle · §3B.4 选中态 Lime */
 .switch {
   position: relative;
   display: inline-flex;
@@ -646,16 +757,14 @@ img {
   gap: var(--space-2);
   cursor: pointer;
 }
-.switch input {
-  display: none;
-}
+.switch input { display: none; }
 .slider {
   width: 40px;
   height: 22px;
-  background: var(--line-3);
+  background: var(--line-1);
   border-radius: var(--radius-full);
   position: relative;
-  transition: background 0.2s;
+  transition: background var(--duration-base);
 }
 .slider::before {
   content: '';
@@ -666,95 +775,113 @@ img {
   border-radius: 50%;
   top: 2px;
   left: 2px;
-  transition: left 0.2s;
+  transition: left var(--duration-base);
 }
 .switch input:checked + .slider {
-  background: var(--accent);
+  background: var(--accent-lime);
 }
 .switch input:checked + .slider::before {
   left: 20px;
 }
 .switch-hint {
-  font-size: 12px;
+  font-size: var(--font-caption);
   color: var(--fg-2);
   min-width: 80px;
 }
 
 /* ============================================================
- * 按钮 · 千图AI 风格(翠绿胶囊)
+ * 按钮 · §1.4 三层 CTA Hierarchy · §1.3 全 pill
  * ============================================================ */
+
+/* Hero · AI 生成 · §1.5 Lime + pill + sparkles ✨ */
 .btn-hero {
-  background: var(--accent);
-  color: var(--button-hero-fg);
-  border: 1px solid var(--accent);
+  background: var(--btn-hero-bg);
+  color: var(--btn-hero-fg);
+  border: none;
   padding: 14px 56px;
-  border-radius: var(--radius-pill-lg);
+  border-radius: var(--btn-radius);
   cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
-  transition: all 0.15s;
+  font-size: var(--font-body-lg);
+  font-weight: var(--font-weight-semibold);
+  transition: all var(--duration-fast) var(--easing-standard);
   min-width: 320px;
-  box-shadow: var(--shadow-accent);
+  box-shadow: var(--shadow-hero-glow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
 }
 .btn-hero:hover:not(:disabled) {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
+  background: var(--btn-hero-hover-bg);
   transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(0, 178, 119, 0.5);
+  box-shadow: 0 12px 40px rgba(216, 245, 30, 0.35);
 }
 .btn-hero:active:not(:disabled) {
+  background: var(--btn-hero-press-bg);
   transform: translateY(0);
 }
 .btn-hero:disabled {
-  background: var(--bg-surface-3);
-  border-color: var(--line-2);
-  color: var(--fg-3);
+  background: var(--btn-disabled-bg);
+  color: var(--btn-disabled-fg);
   cursor: not-allowed;
   box-shadow: none;
 }
+.btn-hero .sparkles {
+  font-size: 18px;
+  filter: drop-shadow(0 0 4px rgba(216, 245, 30, 0.6));
+}
+
+/* Primary · 普通主 CTA = fg/1 实底(Dark = 白底黑字)*/
 .btn-primary {
-  background: var(--button-primary-bg);
-  color: var(--button-primary-fg);
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
   border: none;
   padding: 10px 22px;
-  border-radius: var(--radius-pill);
+  border-radius: var(--btn-radius);
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.15s;
+  font-size: var(--font-body);
+  font-weight: var(--font-weight-semibold);
+  transition: all var(--duration-fast);
 }
 .btn-primary:hover {
-  background: var(--button-primary-bg-hover);
+  background: var(--btn-primary-hover-bg);
 }
+
+/* Secondary · surface/elevated 浅底 + fg/1 文字 */
 .btn-secondary {
-  background: var(--button-secondary-bg);
-  color: var(--button-secondary-fg);
-  border: 1px solid var(--button-secondary-border);
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-fg);
+  border: 1px solid var(--btn-secondary-border);
   padding: 9px 18px;
-  border-radius: var(--radius-pill);
+  border-radius: var(--btn-radius);
   cursor: pointer;
   font-size: 13px;
-  transition: all 0.15s;
+  font-weight: var(--font-weight-medium);
+  transition: all var(--duration-fast);
 }
 .btn-secondary:hover {
-  background: var(--button-secondary-bg-hover);
-  border-color: var(--fg-3);
+  background: var(--btn-secondary-hover-bg);
+  border-color: var(--line-1);
 }
 .btn-secondary.btn-sm {
   padding: 6px 14px;
-  font-size: 12px;
+  font-size: var(--font-caption);
 }
+
+/* Ghost · 透明 */
 .btn-ghost {
   background: transparent;
-  color: var(--fg-2);
+  color: var(--btn-ghost-fg);
   border: none;
   padding: 8px 16px;
   cursor: pointer;
   font-size: 13px;
-  transition: color 0.15s;
+  border-radius: var(--btn-radius);
+  transition: all var(--duration-fast);
 }
 .btn-ghost:hover {
   color: var(--fg-1);
+  background: var(--btn-ghost-hover-bg);
 }
 
 /* ============================================================
@@ -765,7 +892,7 @@ img {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(10, 10, 10, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid var(--line-2);
@@ -776,49 +903,45 @@ img {
 }
 
 /* ============================================================
- * Modal · 暗色卡片
+ * Modal · 暗色卡片 · radius/4
  * ============================================================ */
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
+  background: var(--surface-overlay);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
-  animation: fadeIn 0.2s;
+  animation: fadeIn var(--duration-base);
 }
-.modal.hidden {
-  display: none;
-}
+.modal.hidden { display: none; }
 @keyframes fadeIn {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
 .modal-content {
-  background: var(--bg-surface-1);
+  background: var(--surface-card);
   border: 1px solid var(--line-2);
   color: var(--fg-1);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-4);
   padding: var(--space-8);
   min-width: 380px;
   max-width: 480px;
   box-shadow: var(--shadow-lg);
-  animation: slideUp 0.3s;
+  animation: slideUp 0.3s var(--easing-standard);
 }
 @keyframes slideUp {
   from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  to   { transform: translateY(0);    opacity: 1; }
 }
-.modal-loading {
-  text-align: center;
-}
+.modal-loading { text-align: center; }
 .spinner {
   width: 56px;
   height: 56px;
   border: 4px solid var(--line-2);
-  border-top-color: var(--accent);
+  border-top-color: var(--accent-lime);   /* §1.1 AI 时刻 = Lime */
   border-radius: 50%;
   margin: 0 auto var(--space-5);
   animation: spin 0.9s linear infinite;
@@ -827,13 +950,13 @@ img {
   to { transform: rotate(360deg); }
 }
 .loading-progress {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: var(--font-h4);
+  font-weight: var(--font-weight-semibold);
   margin-bottom: var(--space-1);
   color: var(--fg-1);
 }
 .loading-progress #loading-pct {
-  color: var(--accent);
+  color: var(--accent-lime);          /* AI 时刻数字用 Lime 强调 */
 }
 .loading-eta {
   font-size: 13px;
@@ -841,16 +964,16 @@ img {
   margin-bottom: var(--space-5);
 }
 .modal-title {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: var(--font-h4);
+  font-weight: var(--font-weight-semibold);
   margin-bottom: var(--space-3);
   color: var(--fg-1);
 }
 .modal-message {
-  font-size: 14px;
+  font-size: var(--font-body);
   color: var(--fg-2);
   margin-bottom: var(--space-6);
-  line-height: 1.6;
+  line-height: var(--lh-normal);
 }
 .modal-actions {
   display: flex;
@@ -862,14 +985,14 @@ img {
  * 结果页 · 暗色
  * ============================================================ */
 .result-content {
-  background: var(--bg-surface-1);
+  background: var(--surface-card);
   border: 1px solid var(--line-2);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-4);
   padding: var(--space-6);
 }
 .result-image-wrap {
-  background: var(--bg-surface-2);
-  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+  border-radius: var(--radius-3);
   margin-bottom: var(--space-5);
   padding: var(--space-5);
   display: flex;
@@ -881,7 +1004,7 @@ img {
 #result-image {
   max-width: 100%;
   max-height: 480px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-2);
 }
 .result-actions {
   display: flex;
@@ -903,28 +1026,29 @@ img {
   margin-right: var(--space-1);
 }
 .feedback-btn {
-  background: var(--bg-surface-2);
-  border: 1px solid var(--line-3);
+  background: var(--surface-elevated);
+  border: 1px solid var(--line-1);
   color: var(--fg-1);
   padding: 6px 14px;
-  border-radius: var(--radius-pill);
+  border-radius: var(--btn-radius);     /* pill */
   cursor: pointer;
   font-size: 13px;
-  transition: all 0.15s;
+  transition: all var(--duration-fast);
 }
 .feedback-btn:hover {
-  background: var(--bg-surface-3);
+  background: var(--gray-800);
   border-color: var(--fg-3);
 }
 .feedback-btn.selected {
-  border-color: var(--accent);
-  background: var(--accent-bg);
-  color: var(--accent);
-  font-weight: 600;
+  /* §3B 选中态 = Lime */
+  border-color: var(--accent-lime);
+  background: var(--accent-lime-bg);
+  color: var(--accent-lime);
+  font-weight: var(--font-weight-semibold);
 }
 
 /* ============================================================
- * Toast · 白底黑字(暗色中的对比)
+ * Toast · 白底黑字
  * ============================================================ */
 .toast {
   position: fixed;
@@ -932,11 +1056,11 @@ img {
   left: 50%;
   transform: translateX(-50%);
   background: var(--fg-1);
-  color: var(--bg-app);
+  color: var(--fg-inverse);
   padding: 12px 24px;
-  border-radius: var(--radius-pill);
-  font-size: 14px;
-  font-weight: 500;
+  border-radius: var(--btn-radius);
+  font-size: var(--font-body);
+  font-weight: var(--font-weight-medium);
   z-index: 200;
   transition: opacity 0.3s, transform 0.3s;
   box-shadow: var(--shadow-lg);
@@ -954,12 +1078,12 @@ img {
   position: fixed;
   bottom: 110px;
   right: var(--space-4);
-  background: rgba(20, 20, 20, 0.95);
+  background: rgba(23, 23, 23, 0.95);
   border: 1px solid var(--line-2);
   color: var(--fg-1);
   padding: var(--space-3);
-  border-radius: var(--radius-md);
-  font-size: 12px;
+  border-radius: var(--radius-3);
+  font-size: var(--font-caption);
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
@@ -968,15 +1092,11 @@ img {
   box-shadow: var(--shadow-lg);
   backdrop-filter: blur(8px);
 }
-.dev-panel.collapsed {
-  padding: var(--space-2);
-}
+.dev-panel.collapsed { padding: var(--space-2); }
 .dev-panel.collapsed .dev-btn:not([data-action="toggle"]),
-.dev-panel.collapsed .dev-title {
-  display: none;
-}
+.dev-panel.collapsed .dev-title { display: none; }
 .dev-title {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin-bottom: var(--space-2);
   font-size: 11px;
   opacity: 0.7;
@@ -987,23 +1107,21 @@ img {
   color: var(--fg-1);
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 6px 10px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-1);
   cursor: pointer;
   font-size: 11px;
   text-align: left;
-  transition: background 0.15s;
+  transition: background var(--duration-fast);
 }
 .dev-btn:hover {
   background: rgba(255, 255, 255, 0.12);
-  border-color: var(--accent-border);
+  border-color: rgba(216, 245, 30, 0.3);
 }
 
 /* ============================================================
  * Utilities
  * ============================================================ */
-.hidden {
-  display: none !important;
-}
+.hidden { display: none !important; }
 
 /* ============================================================
  * 移动端响应
@@ -1013,18 +1131,10 @@ img {
     padding: 0 var(--space-4);
     height: 64px;
   }
-  .main-nav {
-    display: none;
-  }
-  .header-left {
-    gap: var(--space-3);
-  }
-  .app-main {
-    padding: var(--space-4);
-  }
-  .page-title {
-    font-size: 22px;
-  }
+  .main-nav { display: none; }
+  .header-left { gap: var(--space-3); }
+  .app-main { padding: var(--space-4); }
+  .page-title { font-size: var(--font-h2); }
   .model-list {
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-2);
