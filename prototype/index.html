@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>千图AI · 手持商品 MVP 原型</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <header class="app-header">
+    <div class="logo">
+      <span class="logo-mark">●</span>
+      <span>千图AI</span>
+    </div>
+    <div class="header-right">
+      <div class="quota">
+        <span class="quota-icon">◆</span>
+        <span id="quota-display">86</span>
+        <span class="quota-unit">算力</span>
+      </div>
+      <button class="btn-secondary btn-sm">充值</button>
+    </div>
+  </header>
+
+  <!-- 主内容区 -->
+  <main class="app-main">
+
+    <!-- 屏 1 · 商品图功能页(入口) -->
+    <section id="screen-entry" class="screen active">
+      <h1 class="page-title">商品图</h1>
+      <p class="page-subtitle">一键生成专业商品图,5 个平台一键适配</p>
+
+      <div class="tab-bar">
+        <button class="tab-btn active">白底图</button>
+        <button class="tab-btn">场景图</button>
+        <button class="tab-btn">海报图</button>
+        <button class="tab-btn">详情图</button>
+        <button class="tab-btn tab-btn-handheld" id="tab-handheld">
+          <span>手持版</span>
+          <span class="badge-new">NEW</span>
+        </button>
+      </div>
+
+      <div class="entry-content">
+        <div class="entry-arrow-hint">
+          <span class="arrow-up">↑</span>
+          点击「手持版」体验新功能
+        </div>
+        <div class="placeholder-grid">
+          <div class="placeholder-card">白底图功能</div>
+          <div class="placeholder-card">场景图功能</div>
+          <div class="placeholder-card">海报图功能</div>
+          <div class="placeholder-card">详情图功能</div>
+        </div>
+        <div class="placeholder-hint">(其他 tab 的内容由千图AI 现有功能填充,原型省略)</div>
+      </div>
+    </section>
+
+    <!-- 屏 2 · 手持版主页 -->
+    <section id="screen-main" class="screen">
+      <button class="back-btn" id="back-to-entry">← 返回商品图</button>
+      <h1 class="page-title">手持版商品图</h1>
+      <p class="page-subtitle">上传商品图,3 步生成模特手持商品的专业图</p>
+
+      <div class="section-card">
+        <!-- Section A · 上传 -->
+        <div class="form-section">
+          <label class="section-label">
+            <span class="required">*</span>商品图
+          </label>
+          <div id="upload-area" class="upload-area">
+            <div id="upload-empty" class="upload-empty">
+              <div class="upload-icon">⬆</div>
+              <div class="upload-hint">点击 / 拖拽 / 粘贴上传图片</div>
+              <div class="upload-meta">JPG / PNG / WEBP · ≤10MB · 长边 512-2048px</div>
+            </div>
+            <div id="upload-preview" class="upload-preview hidden">
+              <img id="upload-image" alt="商品预览">
+              <button class="upload-remove" id="upload-remove" title="移除">×</button>
+            </div>
+          </div>
+          <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" class="hidden">
+        </div>
+
+        <!-- Section B · 模特 -->
+        <div class="form-section">
+          <label class="section-label">选择模特</label>
+          <div id="model-list" class="model-list">
+            <!-- 动态渲染 -->
+          </div>
+        </div>
+
+        <!-- Section C · 高级选项 -->
+        <div class="form-section">
+          <button class="advanced-toggle" id="advanced-toggle" type="button">
+            <span>高级选项</span>
+            <span class="advanced-arrow">▾</span>
+          </button>
+          <div id="advanced-content" class="advanced-content hidden">
+            <div class="form-row">
+              <label class="form-label">输出尺寸</label>
+              <div class="radio-group">
+                <label class="radio-item">
+                  <input type="radio" name="ratio" value="1:1" checked>
+                  <span>1:1</span>
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="ratio" value="3:4">
+                  <span>3:4</span>
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="ratio" value="2:3">
+                  <span>2:3</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="form-label">高清放大</label>
+              <label class="switch">
+                <input type="checkbox" id="hd-toggle">
+                <span class="slider"></span>
+                <span class="switch-hint" id="hd-hint">关闭</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 屏 4 · 结果页 -->
+    <section id="screen-result" class="screen">
+      <button class="back-btn" id="back-from-result">← 返回</button>
+      <h1 class="page-title">生成结果</h1>
+
+      <div class="result-content">
+        <div class="result-image-wrap">
+          <img id="result-image" alt="生成结果">
+        </div>
+
+        <div class="result-actions">
+          <button class="btn-secondary" id="action-download-png">⬇ 下载 PNG</button>
+          <button class="btn-secondary" id="action-download-jpg">⬇ 下载 JPG</button>
+          <button class="btn-secondary" id="action-regenerate">↻ 再生成 (12 算力)</button>
+          <button class="btn-secondary" id="action-save">☆ 保存到素材库</button>
+        </div>
+
+        <div class="feedback-section">
+          <span class="feedback-label">这次效果:</span>
+          <button class="feedback-btn" data-rating="satisfied">满意</button>
+          <button class="feedback-btn" data-rating="neutral">一般</button>
+          <button class="feedback-btn" data-rating="unsatisfied">不满意</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 生成 CTA(只在主页显示) -->
+  <div id="fixed-bottom" class="fixed-bottom hidden">
+    <button class="btn-hero" id="generate-btn" disabled>
+      <span id="generate-text">请先上传商品图</span>
+    </button>
+  </div>
+
+  <!-- Loading Modal(屏 3) -->
+  <div id="modal-loading" class="modal hidden">
+    <div class="modal-content modal-loading">
+      <div class="spinner"></div>
+      <div class="loading-progress">生成中 <span id="loading-pct">0</span>%</div>
+      <div class="loading-eta">预计还需 <span id="loading-eta">8</span> 秒</div>
+      <button class="btn-ghost" id="cancel-generate">取消生成</button>
+    </div>
+  </div>
+
+  <!-- 错误 Modal -->
+  <div id="modal-error" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-title" id="error-title">错误</div>
+      <div class="modal-message" id="error-message">错误描述</div>
+      <div class="modal-actions">
+        <button class="btn-ghost" id="error-cancel">取消</button>
+        <button class="btn-primary" id="error-confirm">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Dev 调试面板 -->
+  <div id="dev-panel" class="dev-panel">
+    <div class="dev-title">🛠 调试面板</div>
+    <button class="dev-btn" data-action="set-quota-low">算力不足场景</button>
+    <button class="dev-btn" data-action="set-quota-normal">恢复算力</button>
+    <button class="dev-btn" data-action="force-fail">下次强制失败</button>
+    <button class="dev-btn" data-action="show-events">查看埋点(console)</button>
+    <button class="dev-btn" data-action="toggle">收起</button>
+  </div>
+
+  <script src="mock-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
