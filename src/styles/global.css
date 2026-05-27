@@ -1,0 +1,274 @@
+/* ============================================================
+ * 千图AI · 手持商品 MVP · 全局样式
+ * 基于 tokens.css 定义的 CSS Variables
+ * 顶部导航 / Tab / 卡片 / 按钮 等公共组件样式
+ * ============================================================ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--font-body);
+  color: var(--fg-1);
+  background: var(--surface-app);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font-family: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ============================================================
+ * Layout · App 容器
+ * ============================================================ */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-app);
+}
+
+/* ============================================================
+ * 顶部导航 · 80px Dark · 对齐 ai.58pic.com
+ * ============================================================ */
+.app-header {
+  height: 80px;
+  background: var(--surface-app);
+  border-bottom: 1px solid var(--line-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-6);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--font-weight-semibold);
+  font-size: 20px;
+  color: var(--fg-1);
+}
+.logo-mark {
+  color: var(--brand-green);
+  font-size: 22px;
+}
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.nav-link {
+  padding: 6px 14px;
+  border-radius: var(--btn-radius);
+  color: var(--fg-3);
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--easing-standard);
+  background: transparent;
+  border: none;
+}
+.nav-link:hover {
+  color: var(--fg-1);
+  background: var(--surface-elevated);
+}
+.nav-link.active {
+  background: var(--surface-elevated);
+  color: var(--fg-1);
+  font-weight: var(--font-weight-medium);
+}
+.quota {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  background: var(--surface-elevated);
+  padding: 8px 14px;
+  border-radius: var(--btn-radius);
+  font-size: var(--font-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--fg-1);
+  border: 1px solid var(--line-2);
+}
+.quota-icon {
+  color: var(--accent-lime);
+}
+.quota-unit {
+  color: var(--fg-2);
+  font-weight: var(--font-weight-regular);
+}
+.btn-vip {
+  background: var(--brand-green) !important;
+  color: var(--brand-green-fg) !important;
+  border: none !important;
+  border-radius: var(--btn-radius) !important;
+  font-weight: var(--font-weight-semibold) !important;
+}
+.btn-vip:hover {
+  background: var(--brand-green-hover) !important;
+}
+
+/* ============================================================
+ * 主内容
+ * ============================================================ */
+.app-main {
+  flex: 1;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+  padding-bottom: 140px;
+}
+.page-title {
+  font-size: var(--font-h1);
+  font-weight: var(--font-weight-semibold);
+  color: var(--fg-1);
+  margin-bottom: var(--space-2);
+  letter-spacing: -0.02em;
+  line-height: var(--lh-tight);
+}
+.page-subtitle {
+  color: var(--fg-2);
+  margin-bottom: var(--space-8);
+  font-size: var(--font-body);
+}
+
+/* ============================================================
+ * Tab Bar · 全 pill · 手持版 = Lime AI 时刻
+ * ============================================================ */
+.tab-bar {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+  flex-wrap: wrap;
+}
+.tab-btn {
+  padding: 10px 20px;
+  background: var(--surface-card);
+  border: 1px solid var(--line-2);
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  color: var(--fg-2);
+  font-size: var(--font-body);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+  transition: all var(--duration-fast) var(--easing-standard);
+  font-weight: var(--font-weight-medium);
+}
+.tab-btn:hover {
+  color: var(--fg-1);
+  border-color: var(--line-1);
+}
+.tab-btn.active {
+  color: var(--fg-inverse);
+  background: var(--fg-1);
+  border-color: var(--fg-1);
+  font-weight: var(--font-weight-semibold);
+}
+.tab-btn-handheld {
+  background: var(--accent-lime-bg);
+  border-color: rgba(216, 245, 30, 0.35);
+  color: var(--accent-lime);
+  animation: pulse-attention 2.5s ease-in-out infinite;
+}
+.tab-btn-handheld:hover {
+  background: rgba(216, 245, 30, 0.18);
+  border-color: var(--accent-lime);
+  color: var(--accent-lime);
+}
+.badge-new {
+  background: var(--sem-error);
+  color: white;
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.3px;
+}
+@keyframes pulse-attention {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(216, 245, 30, 0.4); }
+  50%      { box-shadow: 0 0 0 6px rgba(216, 245, 30, 0); }
+}
+
+/* ============================================================
+ * 入口屏 · 占位
+ * ============================================================ */
+.entry-content {
+  text-align: center;
+  padding: var(--space-8) 0;
+}
+.entry-arrow-hint {
+  color: var(--accent-lime);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-10);
+  font-size: var(--font-body);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+.arrow-up {
+  font-size: 18px;
+  animation: bounce 1.5s ease-in-out infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.placeholder-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.placeholder-card {
+  background: var(--surface-card) !important;
+  border: 1px solid var(--line-2) !important;
+  border-radius: var(--radius-4) !important;
+  color: var(--fg-3) !important;
+  padding: var(--space-10) var(--space-6) !important;
+  font-size: 13px;
+}
+.placeholder-hint {
+  color: var(--fg-3);
+  font-size: var(--font-caption);
+  font-style: italic;
+}
+
+/* ============================================================
+ * 移动端响应
+ * ============================================================ */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 var(--space-4);
+    height: 64px;
+  }
+  .main-nav { display: none; }
+  .header-left { gap: var(--space-3); }
+  .app-main { padding: var(--space-4); }
+  .page-title { font-size: var(--font-h2); }
+}
