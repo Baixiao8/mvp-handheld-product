@@ -1,7 +1,6 @@
 /* ============================================================
  * 千图AI · 手持商品 MVP · 全局样式
- * 基于 tokens.css 定义的 CSS Variables
- * 顶部导航 / Tab / 卡片 / 按钮 等公共组件样式
+ * 基于 tokens.css · 严格 designknowledge token 引用,0 硬编码 hex
  * ============================================================ */
 
 * {
@@ -24,17 +23,11 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-button {
-  font-family: inherit;
-}
-
-img {
-  display: block;
-  max-width: 100%;
-}
+button { font-family: inherit; }
+img { display: block; max-width: 100%; }
 
 /* ============================================================
- * Layout · App 容器
+ * Layout
  * ============================================================ */
 .app {
   min-height: 100vh;
@@ -91,10 +84,7 @@ img {
   background: transparent;
   border: none;
 }
-.nav-link:hover {
-  color: var(--fg-1);
-  background: var(--surface-elevated);
-}
+.nav-link:hover { color: var(--fg-1); background: var(--surface-elevated); }
 .nav-link.active {
   background: var(--surface-elevated);
   color: var(--fg-1);
@@ -112,13 +102,8 @@ img {
   color: var(--fg-1);
   border: 1px solid var(--line-2);
 }
-.quota-icon {
-  color: var(--accent-lime);
-}
-.quota-unit {
-  color: var(--fg-2);
-  font-weight: var(--font-weight-regular);
-}
+.quota-icon { color: var(--accent-lime); }
+.quota-unit { color: var(--fg-2); font-weight: var(--font-weight-regular); }
 .btn-vip {
   background: var(--brand-green) !important;
   color: var(--brand-green-fg) !important;
@@ -126,9 +111,7 @@ img {
   border-radius: var(--btn-radius) !important;
   font-weight: var(--font-weight-semibold) !important;
 }
-.btn-vip:hover {
-  background: var(--brand-green-hover) !important;
-}
+.btn-vip:hover { background: var(--brand-green-hover) !important; }
 
 /* ============================================================
  * 主内容
@@ -156,7 +139,7 @@ img {
 }
 
 /* ============================================================
- * Tab Bar · 全 pill · 手持版 = Lime AI 时刻
+ * Tab Bar
  * ============================================================ */
 .tab-bar {
   display: flex;
@@ -179,10 +162,7 @@ img {
   transition: all var(--duration-fast) var(--easing-standard);
   font-weight: var(--font-weight-medium);
 }
-.tab-btn:hover {
-  color: var(--fg-1);
-  border-color: var(--line-1);
-}
+.tab-btn:hover { color: var(--fg-1); border-color: var(--line-1); }
 .tab-btn.active {
   color: var(--fg-inverse);
   background: var(--fg-1);
@@ -217,10 +197,7 @@ img {
 /* ============================================================
  * 入口屏 · 占位
  * ============================================================ */
-.entry-content {
-  text-align: center;
-  padding: var(--space-8) 0;
-}
+.entry-content { text-align: center; padding: var(--space-8) 0; }
 .entry-arrow-hint {
   color: var(--accent-lime);
   font-weight: var(--font-weight-medium);
@@ -231,10 +208,7 @@ img {
   justify-content: center;
   gap: var(--space-2);
 }
-.arrow-up {
-  font-size: 18px;
-  animation: bounce 1.5s ease-in-out infinite;
-}
+.arrow-up { font-size: 18px; animation: bounce 1.5s ease-in-out infinite; }
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-6px); }
@@ -253,22 +227,332 @@ img {
   padding: var(--space-10) var(--space-6) !important;
   font-size: 13px;
 }
-.placeholder-hint {
+.placeholder-hint { color: var(--fg-3); font-size: var(--font-caption); font-style: italic; }
+
+/* ============================================================
+ * Section Card · 主表单
+ * ============================================================ */
+.section-card {
+  background: var(--surface-card);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-4);
+  padding: var(--space-6);
+}
+.form-section {
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--line-2);
+}
+.form-section:first-child { padding-top: 0; }
+.form-section:last-child { padding-bottom: 0; border-bottom: none; }
+.section-label {
+  display: block;
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-3);
+  font-size: var(--font-body);
+  color: var(--fg-1);
+}
+.required { color: var(--sem-error); margin-right: 2px; }
+
+/* ============================================================
+ * 上传区
+ * ============================================================ */
+.upload-area {
+  border: 2px dashed var(--line-3);
+  border-radius: var(--radius-2_5);
+  padding: var(--space-10);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--duration-base);
+  position: relative;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-panel);
+}
+.upload-area:hover {
+  border-color: var(--fg-1);
+  background: var(--accent-lime-bg);
+}
+.upload-area.dragover {
+  border-color: var(--accent-lime);
+  background: var(--accent-lime-bg);
+  transform: scale(1.005);
+}
+.upload-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+.upload-icon {
+  font-size: 32px;
   color: var(--fg-3);
+  margin-bottom: var(--space-2);
+}
+.upload-hint {
+  color: var(--fg-2);
+  font-size: 15px;
+  font-weight: var(--font-weight-medium);
+}
+.upload-meta { color: var(--fg-3); font-size: var(--font-caption); }
+.upload-preview {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.upload-preview img { max-height: 260px; border-radius: var(--radius-2); }
+.upload-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border: 1px solid var(--line-1);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.upload-remove:hover { background: rgba(0, 0, 0, 0.95); border-color: var(--fg-2); }
+
+/* ============================================================
+ * 模特列表 · 选中态 Lime
+ * ============================================================ */
+.model-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+.model-card {
+  border: 2px solid var(--line-2);
+  border-radius: var(--radius-3);
+  padding: var(--space-2);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--easing-standard);
+  position: relative;
+  background: var(--surface-panel);
+}
+.model-card:hover { border-color: var(--line-1); transform: translateY(-2px); }
+.model-card.active {
+  border-color: var(--accent-lime);
+  background: var(--accent-lime-bg);
+}
+.model-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  background: var(--accent-lime);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: var(--font-weight-bold);
+  color: var(--accent-lime-on);
+}
+.model-thumb {
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--surface-elevated);
+  border-radius: var(--radius-2);
+  margin-bottom: var(--space-2);
+  overflow: hidden;
+}
+.model-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.model-name {
   font-size: var(--font-caption);
-  font-style: italic;
+  color: var(--fg-2);
+  text-align: center;
+  font-weight: var(--font-weight-medium);
+}
+.model-card.active .model-name {
+  color: var(--fg-1);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ============================================================
+ * 高级选项
+ * ============================================================ */
+.advanced-toggle {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  text-align: left;
+  font-size: var(--font-body);
+  color: var(--fg-2);
+  transition: color var(--duration-fast);
+}
+.advanced-toggle:hover { color: var(--fg-1); }
+.advanced-arrow {
+  font-size: 10px;
+  transition: transform var(--duration-base);
+}
+.advanced-toggle.expanded .advanced-arrow { transform: rotate(180deg); }
+.advanced-content {
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  background: var(--surface-panel);
+  border-radius: var(--radius-3);
+  border: 1px solid var(--line-2);
+}
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+.form-row:last-child { margin-bottom: 0; }
+.form-label { font-size: 13px; color: var(--fg-2); }
+.switch-hint {
+  font-size: var(--font-caption);
+  color: var(--fg-2);
+  min-width: 80px;
+}
+
+/* ============================================================
+ * Hero CTA · §1.5 Lime + ✨ + pill
+ * ============================================================ */
+.fixed-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line-2);
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  justify-content: center;
+  z-index: 5;
+}
+.btn-hero {
+  background: var(--btn-hero-bg);
+  color: var(--btn-hero-fg);
+  border: none;
+  padding: 14px 56px;
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  font-size: var(--font-body-lg);
+  font-weight: var(--font-weight-semibold);
+  transition: all var(--duration-fast) var(--easing-standard);
+  min-width: 320px;
+  box-shadow: var(--shadow-hero-glow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+.btn-hero:hover:not(:disabled) {
+  background: var(--btn-hero-hover-bg);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 40px rgba(216, 245, 30, 0.35);
+}
+.btn-hero:active:not(:disabled) {
+  background: var(--btn-hero-press-bg);
+  transform: translateY(0);
+}
+.btn-hero:disabled {
+  background: var(--btn-disabled-bg);
+  color: var(--btn-disabled-fg);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.btn-hero .sparkles {
+  font-size: 18px;
+  filter: drop-shadow(0 0 4px rgba(216, 245, 30, 0.6));
+}
+.btn-hero:disabled .sparkles {
+  filter: none;
+  opacity: 0.4;
+}
+
+/* ============================================================
+ * 结果页
+ * ============================================================ */
+.result-content {
+  background: var(--surface-card);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-4);
+  padding: var(--space-6);
+}
+.result-image-wrap {
+  background: var(--surface-panel);
+  border-radius: var(--radius-3);
+  margin-bottom: var(--space-5);
+  padding: var(--space-5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 380px;
+  border: 1px solid var(--line-2);
+}
+#result-image {
+  max-width: 100%;
+  max-height: 480px;
+  border-radius: var(--radius-2);
+}
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+.feedback-section {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.feedback-label {
+  color: var(--fg-2);
+  font-size: 13px;
+  margin-right: var(--space-1);
+}
+.feedback-btn {
+  background: var(--surface-elevated);
+  border: 1px solid var(--line-1);
+  color: var(--fg-1);
+  padding: 6px 14px;
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all var(--duration-fast);
+}
+.feedback-btn:hover {
+  background: var(--gray-800);
+  border-color: var(--fg-3);
+}
+.feedback-btn.selected {
+  border-color: var(--accent-lime);
+  background: var(--accent-lime-bg);
+  color: var(--accent-lime);
+  font-weight: var(--font-weight-semibold);
 }
 
 /* ============================================================
  * 移动端响应
  * ============================================================ */
 @media (max-width: 768px) {
-  .app-header {
-    padding: 0 var(--space-4);
-    height: 64px;
-  }
+  .app-header { padding: 0 var(--space-4); height: 64px; }
   .main-nav { display: none; }
   .header-left { gap: var(--space-3); }
   .app-main { padding: var(--space-4); }
   .page-title { font-size: var(--font-h2); }
+  .btn-hero { min-width: 0; width: 100%; padding: 14px 24px; }
 }
